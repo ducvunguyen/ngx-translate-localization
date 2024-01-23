@@ -1,24 +1,136 @@
 # TranslateLocalization
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+  install: npm i @ngneat/transloco
 
-## Code scaffolding
+## Guide Basic
 
-Run `ng generate component component-name --project translate-localization` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project translate-localization`.
-> Note: Don't forget to add `--project translate-localization` or else it will be added to the default project in your `angular.json` file. 
+<h4> 
+  Create file i18n-config.ts 
+</h4>
 
-## Build
+[//]: # (note)
+* <small>const CONFIG_I18N : II18nConfig<T_Lang> ={ folders: ['root'] } then folder structure.</small>
 
-Run `ng build translate-localization` to build the project. The build artifacts will be stored in the `dist/` directory.
+```ss
+📦src
+ ┣ 📂app
+ ┣ ...
+ 📦assets
+ ┣ 📂i18n
+ ┣ ┣ 📜vi.json
+ ┣ ┣ 📜en.json
+```
+  
+    import {II18nConfig, T_Lang} from "translate-localization";
 
-## Publishing
+    const CONFIG_I18N : II18nConfig<T_Lang> ={
+      folders: ['root'],
+      defaultLanguage: 'vi',
+      languages: [{
+          label: 'Tiếng việt',
+          lang: 'vi',
+          flag: 'assets/svgs/vietnam-flag-icon.svg'
+        },
+        {
+          label: 'English',
+          lang: 'en',
+          flag: 'assets/svgs/united-kingdom-flag-icon.svg'
+        },
+      ]
+    }
+    export default CONFIG_I18N
 
-After building your library with `ng build translate-localization`, go to the dist folder `cd dist/translate-localization` and run `npm publish`.
+<br/>  
+<h4>
+  app.module.ts. 
+</h4>
 
-## Running unit tests
+    import CONFIG_I18N from "./core/configs/i18n-config";
+    import {I18nModule} from "translate-localization";
 
-Run `ng test translate-localization` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    @NgModule({
+    declarations: [
+      AppComponent,
+      TestDialogComponent
+    ],
+    imports: [
+      I18nModule.forRoot(CONFIG_I18N)
+    ],
+    providers: providerRoot,
+    bootstrap: [AppComponent]
+    })
+    export class AppModule { }
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+<br/>  
+<h4>
+  app.component.ts
+</h4>
+
+    import {I18nService} from "translate-localization";
+    
+    @Component({
+      selector: 'app-root',
+      template: `
+        <p>
+          <span>
+            {{'title' | asyncTranslate | async}} // recommand asyncTranslate
+          </span>
+          Or
+          <span >
+          {{'title' | translate }}
+          </span>
+        </p>
+      `
+    })
+    export class AppComponent {
+    
+      constructor(private i18nService : I18nService) {
+        i18nService.useDefaultLang();
+      }
+    }
+
+
+## Guide advanced
+
+* If you load folders 
+<small>const CONFIG_I18N : II18nConfig<T_Lang> ={ folders: ['root', 'buttons', 'users'] } then folder structure. You can ignore root folders: ['buttons', 'users'] </small>
+
+```
+📦src
+ ┣ 📂app
+ ┣ ...
+ 📦assets
+ ┣ 📂i18n
+ ┣ ┣ 📂buttons
+ ┣ ┣ ┣📜vi.json
+ ┣ ┣ ┣📜en.json
+ ┣ ┣ 📜vi.json
+ ┣ ┣ 📜en.json
+```
+
+    template: `
+      <p>
+        <span>
+          {{'buttons.title' | asyncTranslate | async}} // recommand asyncTranslate
+        </span>
+        <span>
+          {{'users.title' | asyncTranslate | async}} // recommand asyncTranslate
+        </span>
+        Or
+        <span >
+          {{'title' | translate }}
+        </span>
+      </p> `
+
+## API
+
+[//]: (note)
+* I18nService
+  * lang: this.i18.lang => value en or vi any language.
+  * translate(value): this.i18.translate('buttons.title') => get value form json.
+  * useDefaultLang(): this.i18.useDefaultLang() => Init language in app.component.
+  * use(lang): this.i18.use() => change language.
+* pipe
+  * asyncTranslate: async translate lang
+  * translate: translate lang (need load page when you choose other lang).
