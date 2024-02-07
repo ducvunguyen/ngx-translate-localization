@@ -1,0 +1,25 @@
+{
+  "form_user": {
+    "name" : "Name user",
+    "email": "Email user",
+    "exp_Job": "Exp job",
+    "name_job" : "Name Job",
+    "name_company": "Name company",
+    "position": "Position",
+    "income": "Income",
+    "other_job" : "Other job",
+    "list_address": "List address",
+    "introduce": "introduce",
+    "level": "level",
+    "list_tech": "List tech",
+    "info": "Info CV"
+  },
+  "title": "Form user",
+  "info": "Information user",
+  "button_add": "Add",
+  "required": "Required",
+  "minlength_4": "Lest 4 chat",
+  "maxlength_8": "Not more 8 chat",
+  "email": "Required email"
+}
+

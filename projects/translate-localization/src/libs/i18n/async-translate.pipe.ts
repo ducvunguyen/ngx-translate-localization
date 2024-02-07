@@ -11,10 +11,19 @@ export class AsyncTranslatePipe implements PipeTransform {
   }
   transform(value: string) {
     const keys = value.split('.');
-    return this.i18.data.pipe(map(data => {
-      let result = data;
-      keys.forEach(key => result = result[key]);
-      return result
-    }))
+    return new Observable(subscriber => {
+      this.i18.data.subscribe(data => {
+        let result = data;
+        if (result)
+          subscriber.next(value);
+
+        keys.forEach(key => {
+          if (key in result)
+            result = result[key];
+
+        });
+        subscriber.next(result);
+      });
+    })
   }
 }

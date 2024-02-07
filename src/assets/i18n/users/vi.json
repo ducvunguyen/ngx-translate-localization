@@ -1,0 +1,24 @@
+{
+  "form_user": {
+    "name" : "Tên người dùng",
+    "email": "Email người dùng",
+    "exp_Job": "Kinh nghiệm làm việc",
+    "name_job" : "Ngành nghề IT",
+    "name_company": "Tên công ty",
+    "position": "Vị tri công việc",
+    "income": "Thu nhập",
+    "other_job" : "Ngành nghề khác",
+    "list_address": "Địa chỉ liên hệ",
+    "introduce": "Giới thiệu",
+    "level": "level",
+    "list_tech": "Danh sách công nghệ",
+    "info": "Thông tin CV"
+  },
+  "title": "Form người dùng",
+  "info": "Thông tin người dùng",
+  "button_add": "Thêm mới",
+  "required": "Không được để trống",
+  "minlength_4": "Không ít hơn 4 ký tự",
+  "maxlength_8": "Không nhiều hơn 8 ký tự",
+  "email": "Không được để trống email"
+}

@@ -1,17 +1,13 @@
 # TranslateLocalization
 
-  install: npm i @ngneat/transloco
+  Install: npm i @ngneat/transloco
 
-## Guide Basic
-
-<h4> 
-  Create file i18n-config.ts 
-</h4>
+## Guide basic
 
 [//]: # (note)
-* <small>const CONFIG_I18N : II18nConfig<T_Lang> ={ folders: ['root'] } then folder structure.</small>
+If ['root'] => <small>const CONFIG_I18N : II18nConfig<T_Lang> ={ folders: ['root'] } read file lang in folder i18n.</small>
 
-```ss
+```
 📦src
  ┣ 📂app
  ┣ ...
@@ -20,33 +16,25 @@
  ┣ ┣ 📜vi.json
  ┣ ┣ 📜en.json
 ```
-  
+  <h4>app.module.ts.</h4>
+
     import {II18nConfig, T_Lang} from "translate-localization";
+    import {I18nModule} from "translate-localization";
 
     const CONFIG_I18N : II18nConfig<T_Lang> ={
-      folders: ['root'],
+      folders: ['root'], // load file langauges in i18n
       defaultLanguage: 'vi',
       languages: [{
-          label: 'Tiếng việt',
-          lang: 'vi',
-          flag: 'assets/svgs/vietnam-flag-icon.svg'
-        },
-        {
-          label: 'English',
-          lang: 'en',
-          flag: 'assets/svgs/united-kingdom-flag-icon.svg'
-        },
-      ]
+        label: 'Tiếng việt',
+        lang: 'vi',
+        flag: 'assets/svgs/vietnam-flag-icon.svg' //icon language
+      },
+      {
+        label: 'English',
+        lang: 'en',
+        flag: 'assets/svgs/united-kingdom-flag-icon.svg'
+      }]
     }
-    export default CONFIG_I18N
-
-<br/>  
-<h4>
-  app.module.ts. 
-</h4>
-
-    import CONFIG_I18N from "./core/configs/i18n-config";
-    import {I18nModule} from "translate-localization";
 
     @NgModule({
     declarations: [
@@ -90,6 +78,45 @@
       }
     }
 
+## Change language
+    import {I18nService, T_Lang} from "translate-localization";
+    import CONFIG_I18N from "core/configs/i18n-config";
+    import animations, {AnimationState} from "./animation";
+
+    @Component({
+      selector: 'app-index',
+      template: `
+          <button (click)="handleChangeLang(item.lang)" *ngFor="let item of languages" >
+            <img [src]="item.flag" alt="" style="width: 12px; height: 12px" />
+            {{item.label}}
+          </button>
+      `
+      changeDetection: ChangeDetectionStrategy.OnPush,
+    })
+
+    export class IndexComponent {
+      // readonly languages = CONFIG_I18N.languages;
+      readonly languages = [{
+          label: 'Tiếng việt',
+          lang: 'vi',
+          flag: 'assets/svgs/vietnam-flag-icon.svg' //icon language
+        },
+        {
+          label: 'English',
+          lang: 'en',
+          flag: 'assets/svgs/united-kingdom-flag-icon.svg'
+        }
+      ]
+
+      constructor(@Inject(GLOBAL_STATE)
+                  private i18: I18nService) {}
+
+      handleChangeLang(lang: T_Lang){
+        if (this.i18.lang != lang)
+          this.i18.use(lang)
+      }
+    }
+
 
 ## Guide advanced
 
@@ -123,14 +150,27 @@
         </span>
       </p> `
 
+## translate(): Returns the language for which you defined the key in the json file.
+    constructor(private i18: I18nService) {}
+
+    ngOnInit(){
+      console.log(this.i18.translate('users.button_add'))
+    }
+
+## lang: <small> get current your country (vi or en ...);</small>
+    constructor(private i18: I18nService) {}
+    ngOnInit(){
+      console.log(this.i18.lang)
+    }
+
 ## API
 
 [//]: (note)
 * I18nService
-  * lang: this.i18.lang => value en or vi any language.
-  * translate(value): this.i18.translate('buttons.title') => get value form json.
-  * useDefaultLang(): this.i18.useDefaultLang() => Init language in app.component.
-  * use(lang): this.i18.use() => change language.
+  * lang: The return value is the national language. ('en' | 'fr' | 'de' | 'es' | 'af' | 'sq'....)
+  * translate(key: string): Return language and use in file your.ts;
+  * useDefaultLang(): Init language in app.component.
+  * use(lang: T_Lang): Change language. (T_Lang: 'en' | 'fr' | 'de' | 'es' | 'af' | 'sq'....)
 * pipe
   * asyncTranslate: async translate lang
   * translate: translate lang (need load page when you choose other lang).
