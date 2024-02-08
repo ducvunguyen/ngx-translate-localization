@@ -5,7 +5,7 @@ import {BehaviorSubject, catchError, forkJoin, Observable, of} from "rxjs";
 import TOKEN_I18N_CONFIG from "./token-i18n";
 
 import {II18nConfig} from "./i18n-config";
-import {T_Apis, T_Lang} from "./type";
+import {Api, Lang} from "./type";
 
 import {ComponentStore} from "../store/component-store";
 
@@ -15,11 +15,11 @@ const state = {};
 
 @Injectable()
 export class I18nService extends ComponentStore<any>{
-  private _lang = new BehaviorSubject<T_Lang>(getLangLocal({key: this.config.keyLocal}) || this.config.defaultLanguage);
+  private _lang = new BehaviorSubject<Lang>(getLangLocal({key: this.config.keyLocal}) || this.config.defaultLanguage);
   private _lang$ = this._lang.asObservable();
   constructor(private http: HttpClient,
               @Inject(TOKEN_I18N_CONFIG)
-              public config: II18nConfig<T_Lang>) {
+              public config: II18nConfig<Lang>) {
     super(state);
   }
 
@@ -29,11 +29,11 @@ export class I18nService extends ComponentStore<any>{
     return result;
   }
 
-  private readFileJsonI18n = (folder: string, lang: T_Lang) =>
+  private readFileJsonI18n = (folder: string, lang: Lang) =>
     this.http.get(`assets/i18n${folder != '' ? '/' + folder : ''}/${lang}.json`)
       .pipe(catchError(err => of(err)));
 
-  get lang(): T_Lang {
+  get lang(): Lang {
     return this._lang.getValue();
   }
 
@@ -64,8 +64,8 @@ export class I18nService extends ComponentStore<any>{
   }
 
 
-  use(lang: T_Lang){
-    const apis: T_Apis = {};
+  use(lang: Lang){
+    const apis: Api = {};
 
     this._lang.next(lang)
     setLangLocal(lang, this.config.keyLocal);

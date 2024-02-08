@@ -1,8 +1,8 @@
-import {T_Lang} from "./type";
+import {Lang} from "./type";
 
 const defaultKey = 'lang';
-function getLangLocal({key = defaultKey}: { key?: string }) : T_Lang | null {
-  return (localStorage.getItem(key) as T_Lang) || null;
+function getLangLocal({key = defaultKey}: { key?: string }) : Lang | null {
+  return (localStorage.getItem(key) as Lang) || null;
 }
 const setLangLocal = (value: string, key = defaultKey) =>
   localStorage.setItem(key, value)

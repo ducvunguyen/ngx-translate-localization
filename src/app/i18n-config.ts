@@ -1,6 +1,6 @@
-import {II18nConfig, T_Lang} from "translate-localization";
+import {II18nConfig, Lang} from "translate-localization";
 
-const CONFIG_I18N : II18nConfig<T_Lang> ={
+const CONFIG_I18N : II18nConfig<Lang> ={
   folders: ['users', 'buttons'],
   defaultLanguage: 'vi',
   languages: [
