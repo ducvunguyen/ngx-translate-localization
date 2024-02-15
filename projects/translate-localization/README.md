@@ -1,6 +1,6 @@
 # TranslateLocalization
 
-  Install: npm i translate-localization
+  Install: npm i translate-localization@0.0.5
 
 ## Guide basic
 
@@ -14,7 +14,36 @@
  ┣ 📂i18n
  ┣ ┣ 📜vi.json
  ┣ ┣ 📜en.json
+ 
 ```
+  <h4>en.json</h4>
+
+    {
+      "form_user": {
+        "name" : "Name user",
+        "email": "Email user",
+        "exp_Job": "Exp job",
+        "name_job" : "Name Job",
+        "name_company": "Name company",
+        "position": "Position",
+        "income": "Income",
+        "other_job" : "Other job",
+        "list_address": "List address",
+        "introduce": "introduce",
+        "level": "level",
+        "list_tech": "List tech",
+        "info": "Info CV"
+      },
+      "title": "Form user",
+      "info": "Information user",
+      "button_add": "Add",
+      "required": "Required",
+      "minlength_4": "Lest 4 chat",
+      "maxlength_8": "Not more 8 chat",
+      "email": "Required email",
+      "message": "Do you want to delete this {{name}} and {{job}}?"
+    }
+
   <h4>app.module.ts.</h4>
 
   <small>
@@ -28,17 +57,7 @@
 
     const CONFIG_I18N : II18nConfig<Lang> ={
       folders: ['root'], // load file langauges in i18n
-      defaultLanguage: 'vi',
-      languages: [{
-        label: 'Tiếng việt',
-        lang: 'vi',
-        flag: 'assets/svgs/vietnam-flag-icon.svg' //icon language
-      },
-      {
-        label: 'English',
-        lang: 'en',
-        flag: 'assets/svgs/united-kingdom-flag-icon.svg'
-      }]
+      defaultLanguage: 'vi'
     }
 
     @NgModule({
@@ -69,10 +88,6 @@
           <span>
             {{'title' | asyncTranslate | async}} // recommand asyncTranslate
           </span>
-          Or
-          <span >
-          {{'title' | translate }}
-          </span>
         </p>
       `
     })
@@ -100,17 +115,19 @@
     })
 
     export class IndexComponent {
-      // readonly languages = CONFIG_I18N.languages;
-      readonly languages = [{
-          label: 'Tiếng việt',
-          lang: 'vi',
-          flag: 'assets/svgs/vietnam-flag-icon.svg' //icon language
-        },
-        {
-          label: 'English',
-          lang: 'en',
-          flag: 'assets/svgs/united-kingdom-flag-icon.svg'
-        }
+
+      //Lang: 'en' | 'fr' | 'de' | 'es' | 'af' | 'sq' | 'am' | 'ar' | 'hy' | 'az' | 'eu' | 'be' | 'bn' | 'bs' | 'bg' | 'ca' | 'ceb' | 'ny' | 'zh' | 'co' | 'hr' | 'cs' | 'da' | 'nl' | 'eo' | 'et' | 'tl' | 'fi' | 'fy' | 'gl' | 'ka' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'iw' | 'hi' | 'hmn' | 'hu' | 'is' | 'ig' | 'id' | 'ga' | 'it' | 'ja' | 'jw' | 'kn' | 'kk' | 'km' | 'ko' | 'ku' | 'ky' | 'lo' | 'la' | 'lv' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms' | 'ml' | 'mt' | 'mi' | 'mr' | 'mn' | 'my' | 'ne' | 'no' | 'or' | 'ps' | 'fa' | 'pl' | 'pt' | 'pa' | 'ro' | 'sm' | 'gd' | 'sr' | 'st' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'su' | 'sw' | 'sv' | 'tg' | 'ta' | 'te' | 'th' | 'tr' | 'uk' | 'ur' | 'ug' | 'uz' | 'vi' | 'cy' | 'xh' | 'yi' | 'yo' | 'zu'
+      readonly languages: Language<Lang>[] =  [
+          {
+            label: 'Tiếng việt',
+            lang: 'vi',
+            flag: 'assets/svgs/vietnam-flag-icon.svg'
+          },
+          {
+            label: 'English',
+            lang: 'en',
+            flag: 'assets/svgs/united-kingdom-flag-icon.svg'
+          },
       ]
 
       constructor(private i18: I18nService) {}
@@ -126,12 +143,10 @@
 If you load multiple folders then your array is
 ['root', 'buttons', 'users'] and you can ignore root : ['buttons', 'users'].
 
-    const CONFIG_I18N : II18nConfig<Lang> ={
+    const CONFIG_I18N : II18nConfig ={
       folders: ['root', 'buttons', 'users'], // load file langauges in i18n
-      defaultLanguage: 'vi',
-      languages: [...]
+      defaultLanguage: 'vi', // default language
     }
-
 ```
 📦src
  ┣ 📂app
@@ -156,14 +171,10 @@ If you load multiple folders then your array is
         <span>
           {{'users.title' | asyncTranslate | async}} // recommand asyncTranslate
         </span>
-        Or
-        <span >
-          {{'title' | translate }}
-        </span>
       </p> `
 
 <br/>
-<h4> translate(): Returns the language for which you defined the key in the json file. </h4>
+<h4> translate():  </h4> <small>Returns the language for which you defined the key in the json file.</small>
 
 ```
 📦assets
@@ -172,28 +183,53 @@ If you load multiple folders then your array is
 ┣  ┣  ┣ 📜 vi.json
 ┣  ┣  ┣ 📜 en.json
 ```
-
+    //en.json
+    {
+      "button_add": "Add",
+      "message": "Do you want to delete this {{name}} and {{job}}?"
+    } 
+    
+    //app.component.ts
     constructor(private i18: I18nService) {}
 
     ngOnInit(){
-      console.log(this.i18.translate('buttons.button_add'))
+      console.log(this.i18.translate('buttons.button_add')) output >> Add
+
+      console.log(this.i18.translate('buttons.message', {name: 'ABC', job: 'CDF'})) output >> Do you want to delete this ABC and CDF?
     }
+
 <br/>
-<h4>lang: This property get current value your country (vi or en ...)</h4>
+<h4>lang: </h4> <small>This property get current value your country (vi or en ...)</small>
 
     constructor(private i18: I18nService) {}
     ngOnInit(){
-      console.log(this.i18.lang)
+      console.log(this.i18.lang) // output vi or en ...
     }
+
+<br/>
+<h4>Pipe asyncTranslate</h4>
+
+     //en.json
+    {
+      "button_add": "Add",
+      "message": "Do you want to delete this {{name}} and {{job}}?"
+    } 
+
+    <div>
+      {{'users.message' | asyncTranslate: param | async}} output >> Do you want to delete this ABC and CDF?
+
+      {{'users.button_add' | asyncTranslate}} output >> Add
+    </div>
+
 
 ## API
 
 [//]: (note)
 * I18nService
   * lang: The return value is the national language. ('en' | 'fr' | 'de' | 'es' | 'af' | 'sq'....)
-  * translate(key: string): Return language and use in file your.ts;
+  * translate(key: string, params): Return language and use in file your.ts;
   * useDefaultLang(): Init language in app.component.
   * use(lang: Lang): Change language. (Lang: 'en' | 'fr' | 'de' | 'es' | 'af' | 'sq'....)
 * pipe
   * asyncTranslate: async translate lang
-  * translate: translate lang (need load page when you choose other lang).
+

@@ -1,4 +1,7 @@
-<div>
-  {{'buttons.btn_add_up_low' | asyncTranslate | async}}
-</div>
+<button *ngFor="let item of languages" (click)="handleChangeLang(item.lang)">{{item.label}}</button>
 
+<button (click)="translate()">translate</button>
+
+<div>
+  {{'users.message' | asyncTranslate: param | async}}
+</div>

@@ -20,6 +20,7 @@
   "required": "Required",
   "minlength_4": "Lest 4 chat",
   "maxlength_8": "Not more 8 chat",
-  "email": "Required email"
+  "email": "Required email",
+  "message": "Do you want to delete this {{name}} and {{job}}?"
 }
 

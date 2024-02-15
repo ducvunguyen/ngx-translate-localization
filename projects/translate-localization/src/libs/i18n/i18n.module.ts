@@ -4,7 +4,6 @@ import { TranslatePipe } from './translate.pipe';
 import {I18nService} from "./i18n.service";
 import {II18nConfig} from "./i18n-config";
 import { AsyncTranslatePipe } from './async-translate.pipe';
-import {Lang} from "./type";
 import TOKEN_I18N_CONFIG from "./token-i18n";
 @NgModule({
   declarations: [
@@ -20,7 +19,7 @@ import TOKEN_I18N_CONFIG from "./token-i18n";
   ]
 })
 export class I18nModule {
-  static forRoot(config: II18nConfig<Lang>): ModuleWithProviders<I18nModule> {
+  static forRoot(config: II18nConfig): ModuleWithProviders<I18nModule> {
     return {
       ngModule: I18nModule,
       providers: [

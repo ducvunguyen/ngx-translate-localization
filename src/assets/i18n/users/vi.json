@@ -20,5 +20,6 @@
   "required": "Không được để trống",
   "minlength_4": "Không ít hơn 4 ký tự",
   "maxlength_8": "Không nhiều hơn 8 ký tự",
-  "email": "Không được để trống email"
+  "email": "Không được để trống email",
+  "message": "Bạn có muốn xóa {{name}} và {{job}} này không?"
 }

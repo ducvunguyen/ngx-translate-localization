@@ -5,7 +5,7 @@ import {BehaviorSubject, catchError, forkJoin, Observable, of} from "rxjs";
 import TOKEN_I18N_CONFIG from "./token-i18n";
 
 import {II18nConfig} from "./i18n-config";
-import {Api, Lang} from "./type";
+import {Api, HashMap, Lang} from "./type";
 
 import {ComponentStore} from "../store/component-store";
 
@@ -19,13 +19,17 @@ export class I18nService extends ComponentStore<any>{
   private _lang$ = this._lang.asObservable();
   constructor(private http: HttpClient,
               @Inject(TOKEN_I18N_CONFIG)
-              public config: II18nConfig<Lang>) {
+              public config: II18nConfig) {
     super(state);
   }
 
-  private getTranslate(value: string, dataSource: any){
+  private getTranslate<T>(value: string, dataSource: any, prams?: HashMap<T>){
     let keys = value.split('.'), result = dataSource;
-    keys.forEach(key => result = result[key]);
+    keys.forEach(k => result = result[k]);
+    if (prams){
+      const r = /\{\{(.*?)\}\}/g
+      result = result.replace(r, (i: string, p: string) => prams[p] || i);
+    }
     return result;
   }
 
@@ -47,8 +51,8 @@ export class I18nService extends ComponentStore<any>{
     return this.get();
   }
 
-  translate(value: string){
-    return this.getTranslate(value, this.instance());
+  translate<T = any>(value: string, prams?: HashMap<T>){
+    return this.getTranslate<T>(value, this.instance(), prams);
   }
 
   asyncTranslate(key: string){

@@ -1,13 +1,13 @@
 import {Lang} from "./type";
 
-export interface II18nConfig<T> {
+export interface II18nConfig {
   folders: string[],
   keyLocal?: string,
   defaultLanguage: Lang,
-  languages: {
-    label: string,
-    lang: T,
-    flag: string
-  }[]
 }
 
+export interface Language<T> {
+  label: string,
+  lang: T,
+  flag: string
+}
