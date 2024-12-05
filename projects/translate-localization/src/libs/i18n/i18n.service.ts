@@ -25,10 +25,16 @@ export class I18nService extends ComponentStore<any>{
 
   private getTranslate<T>(value: string, dataSource: any, prams?: HashMap<T>){
     let keys = value.split('.'), result = dataSource;
-    keys.forEach(k => result = result[k]);
+    keys.forEach(k => {
+      if(k in result){
+        result = result[k]
+      }
+    });
     if (prams){
       const r = /\{\{(.*?)\}\}/g
-      result = result.replace(r, (i: string, p: string) => prams[p] || i);
+      result = result.replace(r, (i: string, p: string) => {
+        return prams[p] || i
+      });
     }
     return result;
   }
